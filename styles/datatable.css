@@ -1,0 +1,13 @@
+.ag-theme-alpine {
+    /* use theme parameters where possible */
+    @apply font-sans;
+}
+
+/* or write CSS selectors to make customisations beyond what the parameters support */
+.ag-header {
+  @apply bg-transparent rounded-t-lg !important;
+}
+
+.ag-layout-normal {
+  @apply bg-transparent rounded-lg;
+}
