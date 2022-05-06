@@ -5,7 +5,11 @@
 
 /* or write CSS selectors to make customisations beyond what the parameters support */
 .ag-header {
-  @apply bg-transparent rounded-t-lg !important;
+  @apply bg-transparent rounded-t-lg font-normal !important;
+}
+
+.ag-theme-alpine .ag-header-row {
+  @apply font-normal !important;
 }
 
 .ag-layout-normal {

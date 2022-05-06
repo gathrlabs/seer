@@ -41,16 +41,11 @@ function AppointmentsTable() {
   const buttonListener = useCallback(e => {
     gridRef.current.api.deselectAll();
   }, []);
-
   return (
     <div className='w-full'>
-      <div style={{  marginBottom: 10 }}>
-        <DropdownButton options={[{'text': 'Attach Form', url: '/'}, {'text': 'Send Confirmation Email', url: '/'}, {'text': 'Cancel', url: '/'}]} title={'Actions'}/>
-      </div>
       {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
       <div>
       <div className="ag-theme-alpine w-full" style={{ height: 500 }}>
-
         <AgGridReact
           ref={gridRef} // Ref for accessing Grid's API
 
