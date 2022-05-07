@@ -7,15 +7,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function DropdownButton({ options, title, ...props }: { options: any[], title: string }) {
+export default function DropdownButton({ options, title, buttonRegular, children, optionSelected,...props }: { options: any[], title: string, buttonRegular?: boolean, children: React.ReactNode, optionSelected?: any}) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="rounded-lg bg-white py-1 pr-2 border border-slate-500 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+        {buttonRegular ? (<Menu.Button className="rounded-lg bg-white py-1 pr-2 border border-slate-500 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
           <span className="sr-only">Open options</span>
           <DotsVerticalIcon className="h-5 w-5 text-slate-700" aria-hidden="true" />
           <div className='text-slate-700'>Actions</div>
-        </Menu.Button>
+        </Menu.Button>) :
+        (<Menu.Button >{children}</Menu.Button>)}
       </div>
 
       <Transition
@@ -32,15 +33,12 @@ export default function DropdownButton({ options, title, ...props }: { options: 
             <div key={index} className="py-1 border-b">
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
+                    <div onClick={() => optionSelected(option.actionName)} className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-2 py-1'
-                    )}
-                  >
-                    {option.text}
-                  </a>
+                    )}>
+                      {option.text}
+                    </div>
                 )}
               </Menu.Item>
             </div>

@@ -7,7 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
        display: ["Quattrocento", "display"],
-       sans: ["Inter", "sans-serif"],
+       sans: ["Source Sans Pro", "sans-serif"],
       },
     },
   },
