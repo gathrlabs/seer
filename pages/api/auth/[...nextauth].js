@@ -4,21 +4,22 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import AuthApi from "../../../lib/api/auth";
 
 export default NextAuth({
+  secret: process.env.JWT_SECRET,
+  callbacks: {
+    async jwt({ token, user, account }) {
+      user && (token.user = user)
+      return token
+    },
+    session: async ({ session, token }) => {
+      if (token.user) session.user = token.user
+      return session
+    },
+  },
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
-      callbacks: {
-        session: ({ session, token }) => {
-          console.log(token);
-          if (token) {
-            session.id = token.id;
-          }
-          return session;
-        },
-      },
-      secret: "test",
       async authorize(credentials, req) {
-        const user = await AuthApi.login();
+        const user = await AuthApi.login({ email: credentials.email, password: credentials.password });
         if (user) {
           return user
         } else {
@@ -28,7 +29,7 @@ export default NextAuth({
     })
   ],
   pages: {
-      signIn: '/auth/login',
+    signIn: '/auth/login',
   },
   debug: true,
 })

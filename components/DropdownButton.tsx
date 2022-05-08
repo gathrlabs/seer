@@ -7,7 +7,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function DropdownButton({ options, title, buttonRegular, children, optionSelected,...props }: { options: any[], title: string, buttonRegular?: boolean, children: React.ReactNode, optionSelected?: any}) {
+export default function DropdownButton({ options, title, buttonRegular, children, optionSelected, ...props }: { options: any[], title: string, buttonRegular?: boolean, children: React.ReactNode, optionSelected?: any }) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -16,7 +16,7 @@ export default function DropdownButton({ options, title, buttonRegular, children
           <DotsVerticalIcon className="h-5 w-5 text-slate-700" aria-hidden="true" />
           <div className='text-slate-700'>Actions</div>
         </Menu.Button>) :
-        (<Menu.Button >{children}</Menu.Button>)}
+          (<Menu.Button >{children}</Menu.Button>)}
       </div>
 
       <Transition
@@ -30,17 +30,24 @@ export default function DropdownButton({ options, title, buttonRegular, children
       >
         <Menu.Items className="origin-top-left absolute right-0 mt-2 w-56 rounded-md shadow-xl border border-gray-300 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
           {options.map((option, index) => (
-            <div key={index} className="py-1 border-b">
-              <Menu.Item>
-                {({ active }) => (
+            <div key={index} className="border-b">
+              {option.cell ? (
+              <div>
+                <Menu.Item className='px-3 py-2 block bg-slate-100 text-gray-900'>
+                    {option.text}
+                </Menu.Item>
+              </div>) : (
+                <Menu.Item>
+                  {({ active }) => (
                     <div onClick={() => optionSelected(option.actionName)} className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-2 py-1'
+                      'block px-3 py-2'
                     )}>
                       {option.text}
                     </div>
-                )}
-              </Menu.Item>
+                  )}
+                </Menu.Item>
+              )}
             </div>
           ))}
 

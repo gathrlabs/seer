@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getProviders, useSession, signIn, signOut } from 'next-auth/react'
 import GuestLayout from '../../components/Layouts/GuestLayout';
 import DefaultButton from '../../components/DefaultButton';
@@ -9,12 +9,14 @@ import { useRouter } from "next/router";
 const Login: NextPage = ({ providers }) => {
   const { query } = useRouter();
   const { data: session, status } = useSession();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   useEffect(() => {
     if (query.signInToken) {
       signIn(providers.credentials.id, { signInToken: query.signInToken, callbackUrl: '/appointments' })
     }
   }, []);
-  console.log(status);
   return (
     <div>
       <GuestLayout>
@@ -29,7 +31,7 @@ const Login: NextPage = ({ providers }) => {
               <div>
                 <h3 className="mt-24 text-center font-sans text-lg text-slate-800">Login to your account</h3>
               </div>
-              <form className="mt-8 space-y-6" action="#" method="POST">
+              <div className="mt-8 space-y-6">
                 <input type="hidden" name="remember" defaultValue="true" />
                 <div className="rounded-md shadow-sm space-y-2">
                   <div>
@@ -38,6 +40,7 @@ const Login: NextPage = ({ providers }) => {
                     </label>
                     <input
                       id="email-address"
+                      onInput={(e) => setEmail(e.target.value)}
                       name="email"
                       type="email"
                       autoComplete="email"
@@ -52,6 +55,7 @@ const Login: NextPage = ({ providers }) => {
                     </label>
                     <input
                       id="password"
+                      onInput={(e) => setPassword(e.target.value)}
                       name="password"
                       type="password"
                       autoComplete="current-password"
@@ -82,9 +86,9 @@ const Login: NextPage = ({ providers }) => {
                 </div>
 
                 <div>
-                  <DefaultButton onPress={() => signIn(providers.credentials.id, { email: "jsmith@example.com", callbackUrl: '/appointments' })} title='Login' />
+                  <DefaultButton onPress={() => signIn(providers.credentials.id, { email: email, password: password, callbackUrl: '/appointments' })} title='Login' />
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </section>

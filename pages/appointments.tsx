@@ -3,10 +3,14 @@ import DropdownButton from '../components/DropdownButton';
 import MainDashboardLayout from '../components/Layouts/MainDashboardLayout';
 import AppointmentsTable from '../modules/Appointments/Datatable/AppointmentsTable';
 import { getProviders, useSession, signIn } from 'next-auth/react'
+import { useEffect } from 'react';
+import AppointmentsApi from '../lib/api/appointments';
 
 const Appointments: NextPage = () => {
-  const { data: session } = useSession();
-  console.log(session);
+  useEffect(() => {
+    const appointments = AppointmentsApi.all();
+    console.log(appointments);
+  }, [])
   return (
     <div>
       <MainDashboardLayout>

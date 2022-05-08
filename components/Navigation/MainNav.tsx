@@ -1,16 +1,20 @@
 import Link from "next/link"
 import { StackIcon, IdCardIcon, ReaderIcon } from '@radix-ui/react-icons';
-import { Menu } from '@headlessui/react'
 import Avatar from "../Avatar";
 import Image from "next/image";
+import { useRouter } from 'next/router';
 import { getProviders, useSession, signIn, signOut } from 'next-auth/react'
 import { APP_NAME } from '../../lib/utils/constants'
 import DropdownButton from "../DropdownButton";
 
 
 function MainNav() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  console.log(session);
   const optionSelected = (action: Object) => {
     if (action === "signOut") {
+      router.push('/auth/login');
       signOut();
     }
   }
@@ -49,7 +53,12 @@ function MainNav() {
           </div>
           <div>
             <DropdownButton optionSelected={optionSelected} options={[{ 'actionName': 'signOut', 'text': 'Logout' }]} title={'Actions'}>
-              <Avatar />
+              <div className="inline-flex items-center space-x-2">
+                <Avatar />
+                {session ? (<div>
+                  {session.user.user.name}
+                </div>) : <div></div>}
+              </div>
             </DropdownButton>
           </div>
         </div>
