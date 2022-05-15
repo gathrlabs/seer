@@ -11,7 +11,6 @@ import DropdownButton from "../DropdownButton";
 function MainNav() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  console.log(session);
   const optionSelected = (action: Object) => {
     if (action === "signOut") {
       router.push('/auth/login');

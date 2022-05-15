@@ -16,7 +16,7 @@ export default function DropdownButton({ options, title, buttonRegular, children
           <DotsVerticalIcon className="h-5 w-5 text-slate-700" aria-hidden="true" />
           <div className='text-slate-700'>Actions</div>
         </Menu.Button>) :
-          (<Menu.Button >{children}</Menu.Button>)}
+          (<Menu.Button>{children}</Menu.Button>)}
       </div>
 
       <Transition

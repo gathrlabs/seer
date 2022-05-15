@@ -5,13 +5,25 @@
 
 /* or write CSS selectors to make customisations beyond what the parameters support */
 .ag-header {
-  @apply bg-transparent rounded-t-lg font-normal !important;
+  @apply bg-transparent rounded-t-lg font-normal text-base font-sans !important;
+}
+
+.ag-cell {
+  @apply font-sans font-light !important;
 }
 
 .ag-theme-alpine .ag-header-row {
-  @apply font-normal !important;
+  @apply font-normal bg-transparent !important;
 }
 
 .ag-layout-normal {
-  @apply bg-transparent rounded-lg;
+  @apply bg-transparent;
+}
+
+.react-datepicker {
+  @apply font-sans inline-flex !important;
+}
+
+.ag-popup-editor {
+  @apply border-0 shadow-none bg-transparent !important;
 }
