@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
+import { Fragment } from 'react'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -35,7 +35,7 @@ export default function DropdownButton({ options, title, buttonRegular, children
       >
         <Menu.Items className={`${direction === 'Right' ? 'right-0' : 'left-0'} origin-top-left absolute mt-2 w-56 rounded-md shadow-xl border border-gray-300 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20`}>
           {options.map((option, index) => (
-            <div key={index} className="border-b cursor-pointer">
+            <div key={index} className="cursor-pointer">
               {option.cell ? (
               <div>
                 <Menu.Item className='px-3 py-2 block bg-slate-100 text-gray-900'>
