@@ -7,7 +7,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function DropdownButton({ options, title, buttonRegular, children, optionSelected, ...props }: { options: any[], title: string, buttonRegular?: boolean, children: React.ReactNode, optionSelected?: any }) {
+enum Direction {
+  Left = "LEFT",
+  Right = "RIGHT",
+}
+
+export default function DropdownButton({ options, title, buttonRegular, children, optionSelected, disabled, direction, ...props }: { options: any[], title: string, buttonRegular?: boolean, children: React.ReactNode, optionSelected?: any, disabled: boolean, direction: Direction  }) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -28,9 +33,9 @@ export default function DropdownButton({ options, title, buttonRegular, children
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="origin-top-left absolute right-0 mt-2 w-56 rounded-md shadow-xl border border-gray-300 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
+        <Menu.Items className={`${direction === 'Right' ? 'right-0' : 'left-0'} origin-top-left absolute mt-2 w-56 rounded-md shadow-xl border border-gray-300 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20`}>
           {options.map((option, index) => (
-            <div key={index} className="border-b">
+            <div key={index} className="border-b cursor-pointer">
               {option.cell ? (
               <div>
                 <Menu.Item className='px-3 py-2 block bg-slate-100 text-gray-900'>
@@ -40,8 +45,8 @@ export default function DropdownButton({ options, title, buttonRegular, children
                 <Menu.Item>
                   {({ active }) => (
                     <div onClick={() => optionSelected(option.actionName)} className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-3 py-2'
+                      active ? 'bg-slate-50 text-slate-900' : 'text-slate-700',
+                      'block px-3 py-2 text-sm rounded'
                     )}>
                       {option.text}
                     </div>

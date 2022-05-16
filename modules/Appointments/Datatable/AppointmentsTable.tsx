@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback, Fragment } from 'react';
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
+import { Transition } from '@headlessui/react'
 import DatatableComponents from "../../../components/Datatable";
 import DefaultButton from "../../../components/DefaultButton";
 import DropdownButton from "../../../components/DropdownButton";
@@ -7,10 +8,12 @@ import DropdownButton from "../../../components/DropdownButton";
 import 'ag-grid-community/dist/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'; // O
 import { ArrowNarrowDownIcon } from '@heroicons/react/solid';
+import SendConfirmationEmailSlideover from '../Slideover/SendConfirmationEmailSlideover';
 
 function AppointmentsTable({ rowData }) {
   let [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [showConfirmationEmailModal, setShowConfirmationEmailModal] = useState(false);
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const frameworkComponents = {
     dateTimeEditor: DatatableComponents.DateTimeEditor,
@@ -124,7 +127,8 @@ function AppointmentsTable({ rowData }) {
   }, []);
 
 const optionSelected = (action: Object) => {
-    if (action === "signOut") {
+    if (action === "sendConfirmationEmail") {
+      setShowConfirmationEmailModal(true);
     }
   }
 
@@ -135,12 +139,22 @@ const optionSelected = (action: Object) => {
   return (
     <div className='w-full'>
       <div className="inline-flex mb-4 justify-between items-center w-full">
-        <DropdownButton buttonRegular={false} optionSelected={optionSelected} options={[{ 'actionName': 'sendConfirmationEmail', 'text': 'Send Confirmation Email' }]}>
+        <DropdownButton direction="left" disabled={selectedRows.length < 1} buttonRegular={false} optionSelected={optionSelected} options={[{ 'actionName': 'sendConfirmationEmail', 'text': 'Send Confirmation Email' }]}>
           <DefaultButton title="Actions" onPress={() => {}} disabled={selectedRows.length < 1}><ArrowNarrowDownIcon className="h-3 w-3 text-slate-500" /></DefaultButton>
         </DropdownButton>
-        <div className="text-slate-600 bg-slate-800 border-slate-600">
-          Rows Selected
+        <Transition
+        show={selectedRows.length > 0}
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <div className="transition ease-in-out text-slate-100 bg-slate-800 border-slate-600 shadow rounded px-2 py-1 block text-sm">
+          {selectedRows.length} Selected Row{selectedRows.length > 1 ? (<span>s</span>) : ("")}
         </div>
+      </Transition>
       </div>
       <div>
         <div className="ag-theme-alpine w-full font-sans" style={{ height: 500 }}>
@@ -167,11 +181,12 @@ const optionSelected = (action: Object) => {
               suppressRowClickSelection={true}
             /> :
               (<div>
-                <div style={{ height: 500 }} className='w-full bg-yellow-300 rounded-lg flex justify-center items-center'><div>Loading appointments</div></div>
+                <div style={{ height: 500 }} className='w-full bg-yellow-50 rounded-lg flex justify-center items-center'><div>Loading appointments</div></div>
               </div>)
           }
         </div>
       </div>
+      <SendConfirmationEmailSlideover open={showConfirmationEmailModal} />
     </div>
   );
 };

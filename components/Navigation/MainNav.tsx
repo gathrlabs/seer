@@ -51,7 +51,7 @@ function MainNav() {
             </Link>
           </div>
           <div>
-            <DropdownButton optionSelected={optionSelected} options={[{ 'actionName': 'signOut', 'text': 'Logout' }]} title={'Actions'}>
+            <DropdownButton direction="Right" optionSelected={optionSelected} options={[{ 'actionName': 'signOut', 'text': 'Logout' }]} title={'Actions'}>
               <div className="inline-flex items-center space-x-2">
                 <Avatar />
                 {session ? (<div>
