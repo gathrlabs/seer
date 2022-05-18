@@ -3,12 +3,12 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useRef } from 'react'
 import DefaultButton from '../../../components/DefaultButton'
 
-export default function sendConfirmationEmailModal({ show, close } : { show: boolean, close: Any }) {
+export default function sendConfirmationEmailModal({ selectedRows, show, close, confirm } : { selectedRows: any, show: boolean, close: Function, confirm: Function }) {
   const cancelButtonRef = useRef(null)
 
   return (
     <Transition.Root show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={close}>
+      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={close} onConfirm={confirm}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -36,7 +36,7 @@ export default function sendConfirmationEmailModal({ show, close } : { show: boo
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                      Send Confirmation Email to 4 Recpients
+                      Send Confirmation Email to {selectedRows.length} Recpients
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
@@ -49,7 +49,7 @@ export default function sendConfirmationEmailModal({ show, close } : { show: boo
                   <DefaultButton customClasses={'bg-slate-50'} onPress={() => close('SendConfirmationEmailModal')}>
                     Cancel
                   </DefaultButton>
-                  <DefaultButton customClasses={'bg-slate-800 text-slate-200 hover:text-slate-100'}  disabled={false} onPress={() => close('SendConfirmationEmailModal')}>
+                  <DefaultButton customClasses={'bg-slate-800 text-slate-200 hover:text-slate-100'}  disabled={false} onPress={() => confirm('SendConfirmationEmailModal')}>
                         Send Confirmation Email
                   </DefaultButton>
                 </div>

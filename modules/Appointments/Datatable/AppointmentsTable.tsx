@@ -8,6 +8,7 @@ import DropdownButton from "../../../components/DropdownButton";
 import CancelAppointmentModal from '../Modal/CancelAppointmentModal';
 import SendConfirmationEmailModal from '../Modal/SendConfirmationEmailModal';
 import AssignFormSlideover from '../Slideover/AssignFormSlideover';
+import AppointmentsApi from '../../../lib/api/appointments';
 
 import 'ag-grid-community/dist/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'; // O
@@ -154,6 +155,17 @@ function AppointmentsTable({ rowData }) {
     }
   }
 
+  const confirm = (component: string) => {
+    if (component === "SendConfirmationEmailModal") {
+      const sendConfirmationEmail = async (appointmentIds) => {
+        console.log(appointmentIds);
+        await AppointmentsApi.sendConfirmationEmail(appointmentIds);
+      }
+      const ids = selectedRows.map((row) => row.data.id);
+      sendConfirmationEmail(ids);
+    }
+  }
+
   // Example using Grid's API
   const buttonListener = useCallback(e => {
     gridRef.current.api.deselectAll();
@@ -240,7 +252,7 @@ function AppointmentsTable({ rowData }) {
         </div>
       </div>
       <AssignFormSlideover show={showAssignFormSlideover} close={close} />
-      <SendConfirmationEmailModal show={showConfirmationEmailModal} close={close} />
+      <SendConfirmationEmailModal selectedRows={selectedRows} show={showConfirmationEmailModal} close={close} confirm={confirm} />
       <CancelAppointmentModal show={showCancelAppointmentModal} close={close} />
     </div>
   );

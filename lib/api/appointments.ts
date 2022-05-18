@@ -8,7 +8,7 @@ const AppointmentsApi = {
   update: ({appointmentId}: {appointmentId: String}) =>
     acuApi.put(`${SERVER_BASE_URL}api/appointments/${appointmentId}`),
 
-  sendConfirmationEmail: ({appointmentIds}: {appointmentIds: []}) =>
+  sendConfirmationEmail: (appointmentIds: {appointmentIds: []}) =>
     acuApi.post(`${SERVER_BASE_URL}api/appointments/send-confirmation-email`, {
       appointment_ids: appointmentIds,
     }),
