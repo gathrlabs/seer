@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 import DateTimePicker from "../../Inputs/DateTimePicker";
-import { format, zonedTimeToUtc } from 'date-fns-tz';
+import { format } from 'date-fns';
 
 
 export default forwardRef((props, ref) => {
@@ -20,14 +20,7 @@ export default forwardRef((props, ref) => {
       getValue: () => {
         let dateString = null;
         if (selectedDate) {
-          console.log(selectedDate);
-          const tz = selectedDate.substring(
-            selectedDate.indexOf("(") + 1,
-            selectedDate.lastIndexOf(")")
-          );
-          console.log(tz);
-          // const utcTime = zonedTimeToUtc(selectedDate, tz);
-          // dateString = utcTime;
+          dateString = format(selectedDate, 'PPpp	');
         }
         console.log(dateString);
         return dateString;
@@ -47,6 +40,6 @@ export default forwardRef((props, ref) => {
   });
 
   return (
-    <DateTimePicker setTimeSelected={handleDateChange} />
+    <DateTimePicker setTimeSelected={handleDateChange}/>
   )
 });
