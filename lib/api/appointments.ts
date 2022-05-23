@@ -13,9 +13,11 @@ const AppointmentsApi = {
       appointment_ids: appointmentIds,
     }),
   
-  assignForm: ({appointmentId, formId}: {appointmentId: String, formId: String}) =>
-    acuApi.post(`${SERVER_BASE_URL}api/appointments/${appointmentId}/assign-form`, {
-      form_id: formId,
+  assignForm: (appointmentIds, formId, notify: {appointmentId: [], formId: String, notify: Boolean}) =>
+    acuApi.post(`${SERVER_BASE_URL}api/appointments/survey`, {
+      surveys: formId.id,
+      appointment_ids: appointmentIds,
+      notify
     }),
 };
 

@@ -2,13 +2,14 @@ import { Transition } from '@headlessui/react';
 import { ArrowNarrowDownIcon } from '@heroicons/react/solid';
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import { useCallback, useMemo, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import AppointmentsApi from '../../../lib/api/appointments';
 import DatatableComponents from "../../../components/Datatable";
 import DefaultButton from "../../../components/DefaultButton";
 import DropdownButton from "../../../components/DropdownButton";
 import CancelAppointmentModal from '../Modal/CancelAppointmentModal';
 import SendConfirmationEmailModal from '../Modal/SendConfirmationEmailModal';
 import AssignFormSlideover from '../Slideover/AssignFormSlideover';
-import AppointmentsApi from '../../../lib/api/appointments';
 
 import 'ag-grid-community/dist/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'; // O
@@ -124,7 +125,7 @@ function AppointmentsTable({ rowData }) {
   }, []);
 
   const cellValueChangedListener = useCallback(event => {
-    console.log(event);
+    // console.log(event);
   }, []);
 
   const onSelectionChanged = useCallback((event) => {
@@ -155,14 +156,15 @@ function AppointmentsTable({ rowData }) {
     }
   }
 
-  const confirm = (component: string) => {
-    if (component === "SendConfirmationEmailModal") {
-      const sendConfirmationEmail = async (appointmentIds) => {
-        console.log(appointmentIds);
-        await AppointmentsApi.sendConfirmationEmail(appointmentIds);
-      }
-      const ids = selectedRows.map((row) => row.data.id);
-      sendConfirmationEmail(ids);
+  const updateAppointment = async () => {
+    try {
+      await AppointmentsApi.update(appointment);
+      toast.success('Appointment successfully updated.');
+      close('AssignFormSlideover');
+    } catch (err) {
+      setErrors(err.response.data.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -205,7 +207,7 @@ function AppointmentsTable({ rowData }) {
           leave="transition ease-in duration-75"
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
-          className={'inline-flex items-center space-x-2 z-30'}
+          className={'inline-flex items-center space-x-2 z-10'}
         >
           <DropdownButton
             direction="Right"
@@ -251,8 +253,8 @@ function AppointmentsTable({ rowData }) {
           }
         </div>
       </div>
-      <AssignFormSlideover show={showAssignFormSlideover} close={close} />
-      <SendConfirmationEmailModal selectedRows={selectedRows} show={showConfirmationEmailModal} close={close} confirm={confirm} />
+      <AssignFormSlideover selectedRows={selectedRows} show={showAssignFormSlideover} close={close} />
+      <SendConfirmationEmailModal selectedRows={selectedRows} show={showConfirmationEmailModal} close={close} />
       <CancelAppointmentModal show={showCancelAppointmentModal} close={close} />
     </div>
   );
